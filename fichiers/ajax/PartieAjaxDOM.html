@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>TP 3IF Ajax</title>
+    <meta name="author" content="Elöd EGYED-ZSIGMOND">
+
+    <script type="text/javascript" src="partieJavascript.js"></script>
+
+</head>
+
+<body <p>Fichier à modifier/compélter</p>
+    <p>
+        Remplace le texte "LES NOMS" avec le contenu du champ de saisi: <br/>
+		<input name="button" type="button" id="myButton1" onClick="setNom(document.getElementById('myText1').value);" value="1. AJAX simple" />
+        <input name="text" type="text" id="myText1" value="Toto" />
+        <br/><br/>
+        Charge le fichier Employees.xml en ajax, cherche du contenu en javascript et remplace le texte "LES NOMS" avec le srésultat
+		<br />
+        <input name="button2" type="button" id="myButton2" onClick="Bouton2_ajaxEmployees('Employees.xml');" value="2. AJAX avec Employees.xml" />
+       
+		<br />
+		<br/>
+		Charge me un fichier XML contenant des références bibliographiques, une feuille de style, applique la feuille de stymle sur le fichier XML et affiche le résultat en bas de la page:
+		<br/>
+        <input name="button3" type="button" id="myButton2" onClick="Bouton3_ajaxBibliographie('ajax.bib.xml','ajax.bib.xsl','element_a_recuperer');" value="3. AJAX avec ajax.bib.xml/ajax.bib.xsl pour les livres (Book)" />
+
+		<br />
+		<br/>
+		Charge me un fichier XML contenant des références bibliographiques, une feuille de style, récupère le choix de type de bibliographie, le passe en paramètre à la feuille de style, applique la feuille de stymle sur le fichier XML et affiche le résultat en bas de la page:
+		<br/>
+		 <label for="cars">Type de référence biblio :</label>
+
+		<select name="cars" id="type_ref_bibliographiques">
+		  <option value="Book">Livre</option>
+		  <option value="ArticleInJournal">Article dans un journal</option>
+		  <option value="Proceedings">Article dans conférence</option>
+		</select> 
+		<br/>
+        <input name="button4" type="button" id="myButton4" onClick="Bouton4_ajaxBibliographieAvecParametres('ajax.bib.xml','ajax.bibParam.xsl','element_a_recuperer', document.getElementById('type_ref_bibliographiques').value);" value="4. AJAX avec ajax.bib.xml/ajax.bibParam.xsl et un paramètre" />
+
+		</p>
+    <div>
+        <p>Les noms sont : <br/>
+            <span id="id_nom_a_remplacer" style="color: red; font-weight: bold;">LES NOMS (Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par les noms) </span>.</p>
+    </div>
+    <div id="id_element_a_remplacer">
+        <p style="color: red; font-weight: bold;">Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par une bibliographie en XML mise en forme par une feuille de style XSLT...</p>
+    </div>
+
+
+</body>
+
+</html>
