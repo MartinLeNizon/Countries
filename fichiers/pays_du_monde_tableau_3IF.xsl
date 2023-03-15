@@ -18,7 +18,7 @@
         <p>Styled by: Mathis NGUYEN, Martin NIZON (B3427)</p>
 
         <p>Countries where more than 2 languages are spoken:</p>
-        <xsl:for-each select="//country[count(languages/descendant::*) &gt; 2]">
+        <xsl:for-each select="//country[count(languages/*) &gt; 2]">
           <p>
             <xsl:value-of select="country_name/common_name"/>: 
             <xsl:for-each select="languages/*">
