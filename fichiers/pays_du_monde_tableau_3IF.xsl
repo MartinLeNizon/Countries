@@ -17,7 +17,42 @@
         <xsl:apply-templates select="//metadonnees" />
         <p>Styled by: Mathis NGUYEN, Martin NIZON (B3427)</p>
 
+        <p>Countries where more than 2 languages are spoken:</p>
+        <xsl:for-each select="//country[count(languages/descendant::*) &gt; 2]">
+          <p>
+            <xsl:value-of select="country_name/common_name"/>: 
+            <xsl:for-each select="languages/*">
+              <xsl:value-of select="current()"/> (<xsl:value-of select="name()"/>)
+              <xsl:if test="not(position()=last())">
+                <span>, </span>
+              </xsl:if>
+            </xsl:for-each>
+          </p>
        
+        </xsl:for-each>
+
+        
+        <xsl:variable name="max-neighbor-count">
+          <xsl:for-each select="//country">
+            <xsl:sort select="count(borders/neighbour)" data-type="number" order="descending"/>
+            <xsl:if test="position() = 1">
+              <xsl:copy-of select="count(borders/neighbour)"/>
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:variable>
+
+        
+        <p>
+          Countries having the most neighbors (with <xsl:value-of select="$max-neighbor-count"/> neighbors):
+          <xsl:for-each select="//country">
+            <xsl:if test="count(borders/neighbour) = $max-neighbor-count">
+                <xsl:value-of select="country_name/common_name"/>             
+            </xsl:if>
+          </xsl:for-each>
+
+         
+        </p>
+
 
         <xsl:apply-templates select="//countries" />
 
@@ -43,7 +78,7 @@
         <xsl:for-each select="../../../country/infosContinent/subregion">
           <xsl:if test="not(. = preceding::subregion) and ../continent=$current-continent">
             <xsl:variable name="current-subregion" select="."/>
-            <h4><xsl:value-of select="."/> (n pays)</h4>
+            <h4><xsl:value-of select="."/> (<xsl:value-of select="count(//country[infosContinent/subregion=$current-subregion])"/> pays)</h4>
 
             <table border="3" width="600" align="center">
               <tr>
