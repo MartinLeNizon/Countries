@@ -1,4 +1,7 @@
 var currencyEnable = false;
+var country1;
+var country2;
+var oneOrTwo = 1;
 
 function changePageBackgroundAndButtonTextColor(pageBgColor, buttonTextColor) {
     document.body.style.background = pageBgColor;
@@ -9,7 +12,7 @@ function resetBackground() {
     document.body.style.background = 'white';
 }
 
-function infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference, idInfosEspace, currencyEnable) {
+function infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference, idInfosEspace, id, currencyEnable) {
 
     // Chargement du fichier XSL à l'aide de XMLHttpRequest synchrone 
     var xslDocument = chargerHttpXML(xslDocumentUrl);
@@ -37,6 +40,16 @@ function infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, p
     
 	// insérer l'élement transformé dans la page html
     elementHtmlParent.innerHTML=newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
+
+    if (currencyEnable) {
+        var jsonDocumentUrl = "https://restcountries.com/v2/alpha/" + id;
+        var jsonDocument = chargerHttpJSON(jsonDocumentUrl);
+        var elementHtmlParent = window.document.getElementById("country_currency");
+        elementHtmlParent.innerHTML=jsonDocument.currencies[0].name;
+    }
+
+    
+
 }
 
 function displaySvgDrawing(xmlDocumentUrl, espace_drawing) {
@@ -68,7 +81,7 @@ function makeSvgClickable(espace_drawing, espace_infos, element_clickable) {
             // Get the value of the "title" attribute
             var title = element.getAttribute(element_clickable);
             var elementHtmlParent = window.document.getElementById(espace_infos);
-            elementHtmlParent.innerHTML = title;
+            elementHtmlParent.innerHTML = "Name : " +title;
         });
     });
 }
@@ -81,10 +94,15 @@ function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementAR
     // Get all path elements in the SVG
     var clickableElements = svgElement.querySelectorAll('path');
 
+    clickableElements.forEach(function(element) {
+        element.classList.remove('land');
+        element.setAttribute("fill", "#CCCCCC")
+    });
+
     // Attach a click event listener to each element
     clickableElements.forEach(function(element) {
         element.addEventListener('mouseover', function() {
-            infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, this.getAttribute('countryname'), espaceId, currencyEnable);
+            infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, this.getAttribute('countryname'), espaceId, this.getAttribute('id'), currencyEnable);
             element.classList.remove('land');
             element.setAttribute("fill", "red")
         });
@@ -118,6 +136,11 @@ function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementAR
 // }
 
 function autoComplete(textAreaId, datalistId) {
+    const input = document.getElementById(textAreaId);
+    input.setAttribute("list", datalistId);
+}
+
+function autoCompleteOptimized(textAreaId, datalistId) {
 
     // Sort suggestions by similitude with the input
     // For example: F will suggests FI first instead of AF
@@ -170,6 +193,11 @@ function colorLanguage(textId, xmlDocumentUrl) {
     // Get all path elements in the SVG
     var clickableElements = svgElement.querySelectorAll('path');
 
+    clickableElements.forEach(function(element) {
+        element.classList.remove('land');
+        element.setAttribute("fill", "#CCCCCC")
+    });
+
     var countryCode = document.getElementById(textId).value;
     
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
@@ -208,20 +236,20 @@ function randomCountry(espace_country) {
 
     var randomCountry = countries[randomIndex].getAttribute("countryname");
 
-    // Recherche du parent (dont l'id est "here") de l'�l�ment � remplacer dans le document HTML courant
+    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
     var elementHtmlParent = window.document.getElementById(espace_country);
     
-	// ins�rer l'�lement transform� dans la page html
-    elementHtmlParent.innerHTML="Try to find : " + randomCountry;
+	// insérer l'élement transformé dans la page html
+    elementHtmlParent.innerHTML="Game : Try to find... " + randomCountry;
 
     // Attach a click event listener to each element
     countries.forEach(function(element) {
         element.addEventListener('click', function() {
         elementHtmlParent = window.document.getElementById("result_answer");
             if(this.getAttribute('countryname') == randomCountry) {
-                elementHtmlParent.innerHTML="True";
+                elementHtmlParent.innerHTML="Result : True";
             } else {
-                elementHtmlParent.innerHTML="False";
+                elementHtmlParent.innerHTML="Result : False";
             }
         });
     });
@@ -252,97 +280,110 @@ function DisplayCloserCountry(latitudeId, longitudeId, answerId){
 
 }
 
-
 function calculateDistance(distanceId) {
+
+    getCountriesCoord('espace_svg_map', 'countryname', distanceId);
+
+}
+
+function getCountriesCoord(espace_drawing, element_clickable, distanceId) {
 
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
     var xmlDocument = chargerHttpXML("countriesTP.xml");
 
-    
-    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
-    var elementHtmlParent = window.document.getElementById(distanceId);
-    elementHtmlParent.innerHTML = haversine(10,20,50,-10);
-
-}
-
-function chooseCountries(espace_drawing, element_clickable) {
     // Get the SVG element
     var svgElement = document.getElementById(espace_drawing);
 
     // Get all path elements in the SVG
     var clickableElements = svgElement.querySelectorAll('path');
+    
+    var elementHtmlParent = window.document.getElementById(distanceId);
+    
 
     // Attach a click event listener to each element
     clickableElements.forEach(function(element) {
         element.addEventListener('click', function() {
-            // Get the value of the "title" attribute
-            var title = element.getAttribute(element_clickable);
+            if(oneOrTwo === 1){
+                oneOrTwo = 2;
+                country1 = element.getAttribute(element_clickable);
+                elementHtmlParent.innerHTML = "First Country: " + country1;
+            } else {
+                oneOrTwo = 1;
+                country2 = element.getAttribute(element_clickable);
+
+                elementHtmlParent.innerHTML += " ; Second Country: " + country2;
+
+                var xpathExpression = "//country[country_name/common_name = '" + country1 + "']/coordinates/@lat";
+                var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
+                var lat1 = xpathResult.stringValue;
+
+                var xpathExpression = "//country[country_name/common_name = '" + country1 + "']/coordinates/@long";
+                var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
+                var lon1 = xpathResult.stringValue;
+
+                var xpathExpression = "//country[country_name/common_name = '" + country2 + "']/coordinates/@lat";
+                var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
+                var lat2 = xpathResult.stringValue;
+
+                var xpathExpression = "//country[country_name/common_name = '" + country2 + "']/coordinates/@long";
+                var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
+                var lon2 = xpathResult.stringValue;
+
+                dispDistance(distanceId, lat1, lon1, lat2, lon2)
+            }
         });
     });
 }
 
+function dispDistance(distanceId, lat1, lon1, lat2, lon2){
+    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
+    var elementHtmlParent = window.document.getElementById(distanceId);
+    elementHtmlParent.innerHTML += " ; Distance: " + haversine(lat1, lon1, lat2, lon2) + " km";
+}
+
 function haversine(lat1, lon1, lat2, lon2) {
     const R = 6371; // rayon moyen de la Terre en km
-    const dLat = (lat2 - lat1) * Math.PI / 180; // différence de latitude en radians
-    const dLon = (lon2 - lon1) * Math.PI / 180; // différence de longitude en radians
-    const lat1Rad = lat1 * Math.PI / 180; // latitude du premier point en radians
-    const lat2Rad = lat2 * Math.PI / 180; // latitude du deuxième point en radians
+    const dLat = (lat2 - lat1) * Math.PI / 180.0; // différence de latitude en radians
+    const dLon = (lon2 - lon1) * Math.PI / 180.0; // différence de longitude en radians
+    const lat1Rad = lat1 * Math.PI / 180.0; // latitude du premier point en radians
+    const lat2Rad = lat2 * Math.PI / 180.0; // latitude du deuxième point en radians
   
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const a = Math.sin(dLat / 2.0) * Math.sin(dLat / 2.0) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(dLon / 2.0) * Math.sin(dLon / 2.0);
+    const c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c; // distance en km
   
     return d;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function recupererPremierEnfantDeTypeElement(n) {
-    var x = n.firstChild;
-    while (x.nodeType != 1) { // Test if x is an element node (and not a text node or other)
-        x = x.nextSibling;
-    }
-    return x;
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//change le contenu de l'�lement avec l'id "nom" avec la chaine de caract�res en param�tre	  
-function setNom(nom) {
-    var elementHtmlARemplir = window.document.getElementById("id_nom_a_remplacer");
-    elementHtmlARemplir.innerHTML = nom;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function colorByArea(espace_drawing) {
+
+    var xmlDocument = chargerHttpXML("countriesTP.xml");
+    
+
+    // Get the SVG element
+    var svgElement = document.getElementById(espace_drawing);
+
+    // Get all path elements in the SVG
+    var colorableElements = svgElement.querySelectorAll('path');
+
+    // Attach a click event listener to each element
+    colorableElements.forEach(function(element) {
+        var xpathExpression = "//country[country_codes/cca2 = '" + element.getAttribute('id') + "']/@area";  
+        var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
+        var area = Number(xpathResult.stringValue);
+
+        element.classList.remove('land');
+        element.setAttribute("fill", "#000000");
+
+        element.setAttribute("opacity", area/17098242);
+
+    });
+}
+
+
+
+
+
 //charge le fichier XML se trouvant � l'URL relative donn� dans le param�treet le retourne
 function chargerHttpXML(xmlDocumentUrl) {
 
@@ -363,7 +404,6 @@ function chargerHttpXML(xmlDocumentUrl) {
     return httpAjax.responseXML;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 // Charge le fichier JSON se trouvant � l'URL donn�e en param�tre et le retourne
 function chargerHttpJSON(jsonDocumentUrl) {
 
@@ -384,95 +424,4 @@ function chargerHttpJSON(jsonDocumentUrl) {
     var responseData = eval("(" + httpAjax.responseText + ")");
 
     return responseData;
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton2_ajaxEmployees(xmlDocumentUrl) {
-
-
-    var xmlDocument = chargerHttpXML(xmlDocumentUrl);
-
-    //extraction des noms � partir du document XML (avec une feuille de style ou en javascript)
-    var lesNoms = xmlDocument.getElementsByTagName("LastName");
-
-    // Parcours de la liste des noms avec une boucle for et 
-    // construction d'une chaine de charact�res contenant les noms s�par�s par des espaces 
-    // Pour avoir la longueur d'une liste : attribut 'length'
-    // Acc�s au texte d'un noeud "LastName" : NOM_NOEUD.firstChild.nodeValue
-    var chaineDesNoms = "";
-    for (i = 0; i < lesNoms.length; i++) {
-        if (i > 0) {
-            chaineDesNoms = chaineDesNoms + ", ";
-        }
-        chaineDesNoms = chaineDesNoms + lesNoms[i].firstChild.nodeValue + " ";
-    }
-
-
-    // Appel (ou recopie) de la fonction setNom(...) ou bien autre fa�on de modifier le texte de l'�l�ment "span"
-    setNom(chaineDesNoms);
-
-
-
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton3_ajaxBibliographie(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer) {
-
-    // Chargement du fichier XSL � l'aide de XMLHttpRequest synchrone 
-    var xslDocument = chargerHttpXML(xslDocumentUrl);
-
-	//cr�ation d'un processuer XSL
-    var xsltProcessor = new XSLTProcessor();
-
-    // Importation du .xsl
-    xsltProcessor.importStylesheet(xslDocument);
-
-    // Chargement du fichier XML � l'aide de XMLHttpRequest synchrone 
-    var xmlDocument = chargerHttpXML(xmlDocumentUrl);
-
-    // Cr�ation du document XML transform� par le XSL
-    var newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
-
-    // Recherche du parent (dont l'id est "here") de l'�l�ment � remplacer dans le document HTML courant
-    var elementHtmlParent = window.document.getElementById("id_element_a_remplacer");
-    
-	// ins�rer l'�lement transform� dans la page html
-    elementHtmlParent.innerHTML=newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
-	
-
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton4_ajaxBibliographieAvecParametres(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference) {
-
-    // Chargement du fichier XSL � l'aide de XMLHttpRequest synchrone 
-    var xslDocument = chargerHttpXML(xslDocumentUrl);
-
-	//cr�ation d'un processuer XSL
-    var xsltProcessor = new XSLTProcessor();
-
-    // Importation du .xsl
-    xsltProcessor.importStylesheet(xslDocument);
-	
-	//passage du param�tre � la feuille de style
-	xsltProcessor.setParameter("", "param_ref_type",paramXSL_type_reference);
-
-    // Chargement du fichier XML � l'aide de XMLHttpRequest synchrone 
-    var xmlDocument = chargerHttpXML(xmlDocumentUrl);
-
-    // Cr�ation du document XML transform� par le XSL
-    var newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
-
-    // Recherche du parent (dont l'id est "here") de l'�l�ment � remplacer dans le document HTML courant
-    var elementHtmlParent = window.document.getElementById("id_element_a_remplacer");
-    
-	// ins�rer l'�lement transform� dans la page html
-    elementHtmlParent.innerHTML=newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
-	
-
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton4_ajaxEmployeesTableau(xmlDocumentUrl, xslDocumentUrl) {
-    //commenter la ligne suivante qui affiche la bo�te de dialogue!
-    alert("Fonction � compl�ter...");
 }
