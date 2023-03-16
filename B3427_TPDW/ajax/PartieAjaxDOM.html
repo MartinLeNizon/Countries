@@ -1,12 +1,3 @@
-<!-- 
-    A FAIRE
-Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le svg) 
-
-
-
-
--->
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -284,7 +275,7 @@ Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le 
 
 		<input name="button2" type="button" id="myButton2" onClick="resetBackground()" value="2. Reset background" />
 
-		<input name="button3" type="button" id="myButton3" onClick="infosCountry('countriesTP.xml','cherchePays.xsl','element_a_recuperer', document.getElementById('myText1').value, 'infos_country');" value="3. Infos country" />
+		<input name="button3" type="button" id="myButton3" onClick="infosCountry('../countriesTP.xml','cherchePays.xsl','element_a_recuperer', document.getElementById('myText1').value, 'infos_country');" value="3. Infos country" />
         <input name="text" type="text" id="myText1" />
 
         <div id="infos_country">
@@ -310,15 +301,15 @@ Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le 
         
 		<input name="button7" type="button" id="myButton7" onClick="makeSvgClickable('espace_svg_map', 'infos_svg_map', 'countryname')" value="7. Make map clickable" />
         
-		<input name="button8" type="button" id="myButton8" onClick="infosCountryOnMouseOver('countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="8. Capture passing" />
+		<input name="button8" type="button" id="myButton8" onClick="infosCountryOnMouseOver('../countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="8. Capture passing" />
 
         <input name="button9" type="button" id="myButton9" onClick="autoComplete('myText1', 'countriesIds')" value="9. Autocomplete" />
         <input name="button9bis" type="button" id="myButton9bis" onClick="autoCompleteOptimized('myText1', 'countriesIds')" value="9 (bis). Autocomplete (even better)" />
         
-        <input name="button10" type="button" id="myButton10" onClick="addCurrency(); infosCountryOnMouseOver('countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="10. Add Currency" />
+        <input name="button10" type="button" id="myButton10" onClick="addCurrency(); infosCountryOnMouseOver('../countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="10. Add Currency" />
         
 
-        <input name="button11" type="button" id="myButton11" onClick="colorLanguage('myText1', 'countriesTP.xml')" value="11. Color Language" />
+        <input name="button11" type="button" id="myButton11" onClick="colorLanguage('myText1', '../countriesTP.xml')" value="11. Color Language" />
         
 
         <input name="button12" type="button" id="myButton12" onClick="randomCountry('random_country')" value="12. Random Country" />
@@ -327,7 +318,7 @@ Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le 
 
         <span>Latitude: </span><input name="text" type="text2" id="myText2" />
         <span>Longitude: </span><input name="text3" type="text" id="myText3" />
-        <input name="button13" type="button" id="myButton13" onClick="DisplayCloserCountry('myText2', 'myText3', 'answer_coordinates')" value="13. Find country" />
+        <input name="button13" type="button" id="myButton13" onClick="findCountry('myText2', 'myText3', 'answer_coordinates')" value="13. Find country" />
 
         <div id="answer_coordinates">
         </div>
@@ -335,10 +326,10 @@ Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le 
         <br/>
 
         
-        <input name="button14" type="button" id="myButton14" onClick="calculateDistance('distance')" value="14. Calculate distance between two countries" />
+        <input name="button14" type="button" id="myButton14" onClick="colorByArea('espace_svg_map')" value="14. Color by area" />
+        <input name="button15" type="button" id="myButton15" onClick="calculateDistance('distance')" value="15. Calculate distance between two countries (click on the map)" />
         <span id="distance">
         </span>
-        <input name="button15" type="button" id="myButton15" onClick="colorByArea('espace_svg_map')" value="15. Color by area" />
         <br/>
         <br/>
         
@@ -363,54 +354,6 @@ Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le 
         </div>
         <br/>
         <br/>
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Remplace le texte "LES NOMS" avec le contenu du champ de saisi: <br/>
-		<input name="button" type="button" id="myButton1" onClick="setNom(document.getElementById('myText1').value);" value="1. AJAX simple" />
-        <input name="text" type="text" id="myText1" value="Toto" />
-        <br/><br/>
-        Charge le fichier Employees.xml en ajax, cherche du contenu en javascript et remplace le texte "LES NOMS" avec le sr�sultat
-		<br />
-        <input name="button2" type="button" id="myButton2" onClick="Bouton2_ajaxEmployees('Employees.xml');" value="2. AJAX avec Employees.xml" />
-       
-		<br />
-		<br/>
-		Charge me un fichier XML contenant des r�f�rences bibliographiques, une feuille de style, applique la feuille de stymle sur le fichier XML et affiche le r�sultat en bas de la page:
-		<br/>
-        <input name="button3" type="button" id="myButton2" onClick="Bouton3_ajaxBibliographie('ajax.bib.xml','ajax.bib.xsl','element_a_recuperer');" value="3. AJAX avec ajax.bib.xml/ajax.bib.xsl pour les livres (Book)" />
-
-		<br />
-		<br/>
-		Charge me un fichier XML contenant des r�f�rences bibliographiques, une feuille de style, r�cup�re le choix de type de bibliographie, le passe en param�tre � la feuille de style, applique la feuille de stymle sur le fichier XML et affiche le r�sultat en bas de la page:
-		<br/>
-		 <label for="cars">Type de r�f�rence biblio :</label>
-
-		<select name="cars" id="type_ref_bibliographiques">
-		  <option value="Book">Livre</option>
-		  <option value="ArticleInJournal">Article dans un journal</option>
-		  <option value="Proceedings">Article dans conf�rence</option>
-		</select> 
-		<br/>
-        <input name="button4" type="button" id="myButton4" onClick="Bouton4_ajaxBibliographieAvecParametres('ajax.bib.xml','ajax.bibParam.xsl','element_a_recuperer', document.getElementById('type_ref_bibliographiques').value);" value="4. AJAX avec ajax.bib.xml/ajax.bibParam.xsl et un param�tre" />
-
-		</p>
-    <div>
-        <p>Les noms sont : <br/>
-            <span id="id_nom_a_remplacer" style="color: red; font-weight: bold;">LES NOMS (Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par les noms) </span>.</p>
-    </div>
-    <div id="id_element_a_remplacer">
-        <p style="color: red; font-weight: bold;">Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par une bibliographie en XML mise en forme par une feuille de style XSLT...</p>
-    </div> -->
-
 
 </body>
 

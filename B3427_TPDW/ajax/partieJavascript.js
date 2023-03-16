@@ -23,10 +23,10 @@ function infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, p
     // Importation du .xsl
     xsltProcessor.importStylesheet(xslDocument);
 
-	//passage du paramètre à la feuille de style
+	// Passage du paramètre à la feuille de style
 	xsltProcessor.setParameter("", "param_ref_type", paramXSL_type_reference);
 
-    //passage du paramètre à la feuille de style
+    // Passage du paramètre à la feuille de style
 	xsltProcessor.setParameter("", "param_ref_type2", currencyEnable);
 
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
@@ -38,9 +38,10 @@ function infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, p
     // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
     var elementHtmlParent = window.document.getElementById(idInfosEspace);
     
-	// insérer l'élement transformé dans la page html
+	// Insérer l'élement transformé dans la page html
     elementHtmlParent.innerHTML=newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
 
+    // Remplir la colonne Currency si besoin
     if (currencyEnable) {
         var jsonDocumentUrl = "https://restcountries.com/v2/alpha/" + id;
         var jsonDocument = chargerHttpJSON(jsonDocumentUrl);
@@ -54,31 +55,31 @@ function infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, p
 
 function displaySvgDrawing(xmlDocumentUrl, espace_drawing) {
 
-    // Chargement du fichier XML � l'aide de XMLHttpRequest synchrone 
+    // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
     var xmlDocument = chargerHttpXML(xmlDocumentUrl);
 
-    // Serialize the XML into a string
+    // Serialiser le XML dans un string
     var serializer = new XMLSerializer();
     var svgString = serializer.serializeToString(xmlDocument);
 
-    // Recherche du parent (dont l'id est "here") de l'�l�ment � remplacer dans le document HTML courant
+    // Recherche du parent de l'élément à remplacer dans le document HTML courant
     var elementHtmlParent = window.document.getElementById(espace_drawing);
     
-	// ins�rer l'�lement transform� dans la page html
+	// Insérer l'élément transformé dans la page html
     elementHtmlParent.innerHTML=svgString;
 }
 
 function makeSvgClickable(espace_drawing, espace_infos, element_clickable) {
-    // Get the SVG element
+    // Récupérer le SVG element
     var svgElement = document.getElementById(espace_drawing);
 
-    // Get all circle, rectangle, and path elements in the SVG
+    // Récupérer tous les cercles, rectangles et path éléments dans le SVG
     var clickableElements = svgElement.querySelectorAll('circle, rect, path');
 
-    // Attach a click event listener to each element
+    // Ajouter un click event listener à chaque élément
     clickableElements.forEach(function(element) {
         element.addEventListener('click', function() {
-            // Get the value of the "title" attribute
+            // Récupérer la valeur de l'attribut à afficher
             var title = element.getAttribute(element_clickable);
             var elementHtmlParent = window.document.getElementById(espace_infos);
             elementHtmlParent.innerHTML = "Name : " +title;
@@ -88,18 +89,20 @@ function makeSvgClickable(espace_drawing, espace_infos, element_clickable) {
 
 function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, espaceId, currencyEnable) {
 
-    // Get the SVG element
+    // Récupérer le SVG element
     var svgElement = document.getElementById("espace_svg_map");
 
-    // Get all path elements in the SVG
+    // Récupérer tous les path éléments dans le SVG
     var clickableElements = svgElement.querySelectorAll('path');
 
+    //Remettre la map originale
     clickableElements.forEach(function(element) {
         element.classList.remove('land');
-        element.setAttribute("fill", "#CCCCCC")
+        element.setAttribute("fill", "#CCCCCC");
+        element.setAttribute("opacity", 1);
     });
 
-    // Attach a click event listener to each element
+    // Ajouter un mouseover et mouseleave event listener à chaque élément
     clickableElements.forEach(function(element) {
         element.addEventListener('mouseover', function() {
             infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, this.getAttribute('countryname'), espaceId, this.getAttribute('id'), currencyEnable);
@@ -126,24 +129,18 @@ function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementAR
     });
 }
 
-
-// function autoComplete(textAreaId, datalistId) {
-
-// Don't sort suggestions
-
-//     const input = document.getElementById(textAreaId);
-//     input.setAttribute("list", datalistId);
-// }
-
 function autoComplete(textAreaId, datalistId) {
+
+    // Ne pas trier les suggestions
+
     const input = document.getElementById(textAreaId);
     input.setAttribute("list", datalistId);
 }
 
 function autoCompleteOptimized(textAreaId, datalistId) {
 
-    // Sort suggestions by similitude with the input
-    // For example: F will suggests FI first instead of AF
+    // Trier les suggestions
+    // Par exemple : on suggérera  FI au lieu de AF quand l'utilisateur écrit F
 
     const input = document.getElementById(textAreaId);
     input.setAttribute("list", datalistId);
@@ -187,15 +184,17 @@ function addCurrency() {
 }
 
 function colorLanguage(textId, xmlDocumentUrl) {
-    // Get the SVG element
+    // Récupérer le SVG element
     var svgElement = document.getElementById("espace_svg_map");
 
-    // Get all path elements in the SVG
-    var clickableElements = svgElement.querySelectorAll('path');
+    // Récupérer tous les path éléments dans le SVG
+    var colorElements = svgElement.querySelectorAll('path');
 
-    clickableElements.forEach(function(element) {
+    //Remettre la map originale
+    colorElements.forEach(function(element) {
         element.classList.remove('land');
         element.setAttribute("fill", "#CCCCCC")
+        element.setAttribute("opacity", 1);
     });
 
     var countryCode = document.getElementById(textId).value;
@@ -203,7 +202,7 @@ function colorLanguage(textId, xmlDocumentUrl) {
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
     var xmlDocument = chargerHttpXML(xmlDocumentUrl);
 
-    // Use XPath to extract information from the XML document
+    // Utilser XPath pour extraire des informations du document XML
     var xpathExpression = "//country[languages/* = //country[country_codes/cca2='" + countryCode + "']/languages/*]/country_name/common_name";
     var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
@@ -214,8 +213,8 @@ function colorLanguage(textId, xmlDocumentUrl) {
         countriesSelected.push(countrySelected);
     }
 
-    // Attach a click event listener to each element
-    clickableElements.forEach(function(element) {
+    //Coloier en bleu les éléments 
+    colorElements.forEach(function(element) {
         if(countriesSelected.includes(element.getAttribute('countryname'))) {
             element.classList.remove('land');
             element.setAttribute("fill", "blue")
@@ -236,13 +235,13 @@ function randomCountry(espace_country) {
 
     var randomCountry = countries[randomIndex].getAttribute("countryname");
 
-    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
+    // Recherche du parent de l'élément à remplacer dans le document HTML courant
     var elementHtmlParent = window.document.getElementById(espace_country);
     
 	// insérer l'élement transformé dans la page html
     elementHtmlParent.innerHTML="Game : Try to find... " + randomCountry;
 
-    // Attach a click event listener to each element
+    // Ajouter un click event listener à chaque pays
     countries.forEach(function(element) {
         element.addEventListener('click', function() {
         elementHtmlParent = window.document.getElementById("result_answer");
@@ -255,24 +254,24 @@ function randomCountry(espace_country) {
     });
 }
 
-function DisplayCloserCountry(latitudeId, longitudeId, answerId){
+function findCountry(latitudeId, longitudeId, answerId){
 
     var latitude = document.getElementById(latitudeId).value;
     var longitude = document.getElementById(longitudeId).value;
     
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
-    var xmlDocument = chargerHttpXML("countriesTP.xml");
+    var xmlDocument = chargerHttpXML("../countriesTP.xml");
 
     var xpathExpression = "//country[coordinates/@lat = " + latitude + " and coordinates/@long = " + longitude + "]/country_name/common_name";
    
     var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
     var result = xpathResult.stringValue;
     
-    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
+    // Recherche du parent de l'élément à remplacer dans le document HTML courant
     var elementHtmlParent = window.document.getElementById(answerId);
 
     if(result) {
-        // insérer l'élement transformé dans la page html
+        // Insérer l'élement transformé dans la page html
         elementHtmlParent.innerHTML = result;
     } else {
         elementHtmlParent.innerHTML = "No country found";
@@ -289,18 +288,18 @@ function calculateDistance(distanceId) {
 function getCountriesCoord(espace_drawing, element_clickable, distanceId) {
 
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
-    var xmlDocument = chargerHttpXML("countriesTP.xml");
+    var xmlDocument = chargerHttpXML("../countriesTP.xml");
 
-    // Get the SVG element
+    // Récupérer le SVG element
     var svgElement = document.getElementById(espace_drawing);
 
-    // Get all path elements in the SVG
+    // Récupérer tous les path éléments dans le SVG
     var clickableElements = svgElement.querySelectorAll('path');
     
     var elementHtmlParent = window.document.getElementById(distanceId);
     
 
-    // Attach a click event listener to each element
+    // Ajouter un click event listener à chaque élément
     clickableElements.forEach(function(element) {
         element.addEventListener('click', function() {
             if(oneOrTwo === 1){
@@ -336,7 +335,7 @@ function getCountriesCoord(espace_drawing, element_clickable, distanceId) {
 }
 
 function dispDistance(distanceId, lat1, lon1, lat2, lon2){
-    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
+    // Recherche du parent de l'élément à remplacer dans le document HTML courant
     var elementHtmlParent = window.document.getElementById(distanceId);
     elementHtmlParent.innerHTML += " ; Distance: " + haversine(lat1, lon1, lat2, lon2) + " km";
 }
@@ -357,16 +356,16 @@ function haversine(lat1, lon1, lat2, lon2) {
 
 function colorByArea(espace_drawing) {
 
-    var xmlDocument = chargerHttpXML("countriesTP.xml");
+    var xmlDocument = chargerHttpXML("../countriesTP.xml");
     
 
-    // Get the SVG element
+    // Récupérer le SVG element
     var svgElement = document.getElementById(espace_drawing);
 
-    // Get all path elements in the SVG
+    // Récupérer tous les path éléments dans le SVG
     var colorableElements = svgElement.querySelectorAll('path');
 
-    // Attach a click event listener to each element
+    // Ajouter un click event listener à chaque élément
     colorableElements.forEach(function(element) {
         var xpathExpression = "//country[country_codes/cca2 = '" + element.getAttribute('id') + "']/@area";  
         var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
@@ -384,7 +383,7 @@ function colorByArea(espace_drawing) {
 
 
 
-//charge le fichier XML se trouvant � l'URL relative donn� dans le param�treet le retourne
+//charge le fichier XML se trouvant à l'URL relative donné dans le paramètre et le retourne
 function chargerHttpXML(xmlDocumentUrl) {
 
     var httpAjax;
@@ -397,14 +396,14 @@ function chargerHttpXML(xmlDocumentUrl) {
         httpAjax.overrideMimeType('text/xml');
     }
 
-    //chargement du fichier XML � l'aide de XMLHttpRequest synchrone (le 3� param�tre est d�fini � false)
+    //chargement du fichier XML à l'aide de XMLHttpRequest synchrone (le 3ème paramètre est défini à false)
     httpAjax.open('GET', xmlDocumentUrl, false);
     httpAjax.send();
 
     return httpAjax.responseXML;
 }
 
-// Charge le fichier JSON se trouvant � l'URL donn�e en param�tre et le retourne
+// Charge le fichier JSON se trouvant à l'URL donnée en paramètre et le retourne
 function chargerHttpJSON(jsonDocumentUrl) {
 
     var httpAjax;
@@ -417,7 +416,7 @@ function chargerHttpJSON(jsonDocumentUrl) {
         httpAjax.overrideMimeType('text/xml');
     }
 
-    // chargement du fichier JSON � l'aide de XMLHttpRequest synchrone (le 3� param�tre est d�fini � false)
+    // chargement du fichier JSON à l'aide de XMLHttpRequest synchrone (le 3ème paramètre est défini à false)
     httpAjax.open('GET', jsonDocumentUrl, false);
     httpAjax.send();
 
