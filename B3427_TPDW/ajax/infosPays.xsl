@@ -18,7 +18,7 @@
                             <xsl:if test="$param_ref_type2 = true()">
                                 <th>currency</th>
                             </xsl:if> 
-                            <tr>
+                            <tr height="50">
                                 <td id="country_name"><xsl:value-of select="//country[country_name/common_name = $param_ref_type]/country_name/common_name"/></td>
                                 <td id="country_capital"><xsl:value-of select="//country[country_name/common_name = $param_ref_type]/capital"/></td>
                                 <td id="country_spoken_languages">

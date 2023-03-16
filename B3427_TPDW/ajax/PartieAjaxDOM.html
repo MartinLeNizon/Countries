@@ -1,0 +1,437 @@
+<!-- 
+    A FAIRE
+Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le svg) 
+
+
+
+
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>TP 3IF Ajax</title>
+    <meta name="author" content="Mathis Nguyen & Martin Nizon">
+
+    <script type="text/javascript" src="partieJavascript.js"></script>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <datalist id="countriesIds">
+        <option value="AD">
+        <option value="AE">
+        <option value="AF">
+        <option value="AG">
+        <option value="AI">
+        <option value="AL">
+        <option value="AM">
+        <option value="AO">
+        <option value="AR">
+        <option value="AS">
+        <option value="AT">
+        <option value="AU">
+        <option value="AW">
+        <option value="AX">
+        <option value="AZ">
+        <option value="BA">
+        <option value="BB">
+        <option value="BD">
+        <option value="BE">
+        <option value="BF">
+        <option value="BG">
+        <option value="BH">
+        <option value="BI">
+        <option value="BJ">
+        <option value="BL">
+        <option value="BN">
+        <option value="BO">
+        <option value="BM">
+        <option value="BQ">
+        <option value="BR">
+        <option value="BS">
+        <option value="BT">
+        <option value="BV">
+        <option value="BW">
+        <option value="BY">
+        <option value="BZ">
+        <option value="CA">
+        <option value="CC">
+        <option value="CD">
+        <option value="CF">
+        <option value="CG">
+        <option value="CH">
+        <option value="CI">
+        <option value="CK">
+        <option value="CL">
+        <option value="CM">
+        <option value="CN">
+        <option value="CO">
+        <option value="CR">
+        <option value="CU">
+        <option value="CV">
+        <option value="CW">
+        <option value="CX">
+        <option value="CY">
+        <option value="CZ">
+        <option value="DE">
+        <option value="DJ">
+        <option value="DK">
+        <option value="DM">
+        <option value="DO">
+        <option value="DZ">
+        <option value="EC">
+        <option value="EG">
+        <option value="EE">
+        <option value="EH">
+        <option value="ER">
+        <option value="ES">
+        <option value="ET">
+        <option value="FI">
+        <option value="FJ">
+        <option value="FK">
+        <option value="FM">
+        <option value="FO">
+        <option value="FR">
+        <option value="GA">
+        <option value="GB">
+        <option value="GE">
+        <option value="GD">
+        <option value="GF">
+        <option value="GG">
+        <option value="GH">
+        <option value="GI">
+        <option value="GL">
+        <option value="GM">
+        <option value="GN">
+        <option value="GO">
+        <option value="GP">
+        <option value="GQ">
+        <option value="GR">
+        <option value="GS">
+        <option value="GT">
+        <option value="GU">
+        <option value="GW">
+        <option value="GY">
+        <option value="HK">
+        <option value="HM">
+        <option value="HN">
+        <option value="HR">
+        <option value="HT">
+        <option value="HU">
+        <option value="ID">
+        <option value="IE">
+        <option value="IL">
+        <option value="IM">
+        <option value="IN">
+        <option value="IO">
+        <option value="IQ">
+        <option value="IR">
+        <option value="IS">
+        <option value="IT">
+        <option value="JE">
+        <option value="JM">
+        <option value="JO">
+        <option value="JP">
+        <option value="JU">
+        <option value="KE">
+        <option value="KG">
+        <option value="KH">
+        <option value="KI">
+        <option value="KM">
+        <option value="KN">
+        <option value="KP">
+        <option value="KR">
+        <option value="XK">
+        <option value="KW">
+        <option value="KY">
+        <option value="KZ">
+        <option value="LA">
+        <option value="LB">
+        <option value="LC">
+        <option value="LI">
+        <option value="LK">
+        <option value="LR">
+        <option value="LS">
+        <option value="LT">
+        <option value="LU">
+        <option value="LV">
+        <option value="LY">
+        <option value="MA">
+        <option value="MC">
+        <option value="MD">
+        <option value="MG">
+        <option value="ME">
+        <option value="MF">
+        <option value="MH">
+        <option value="MK">
+        <option value="ML">
+        <option value="MO">
+        <option value="MM">
+        <option value="MN">
+        <option value="MP">
+        <option value="MQ">
+        <option value="MR">
+        <option value="MS">
+        <option value="MT">
+        <option value="MU">
+        <option value="MV">
+        <option value="MW">
+        <option value="MX">
+        <option value="MY">
+        <option value="MZ">
+        <option value="NA">
+        <option value="NC">
+        <option value="NE">
+        <option value="NF">
+        <option value="NG">
+        <option value="NI">
+        <option value="NL">
+        <option value="NO">
+        <option value="NP">
+        <option value="NR">
+        <option value="NU">
+        <option value="NZ">
+        <option value="OM">
+        <option value="PA">
+        <option value="PE">
+        <option value="PF">
+        <option value="PG">
+        <option value="PH">
+        <option value="PK">
+        <option value="PL">
+        <option value="PM">
+        <option value="PN">
+        <option value="PR">
+        <option value="PS">
+        <option value="PT">
+        <option value="PW">
+        <option value="PY">
+        <option value="QA">
+        <option value="RE">
+        <option value="RO">
+        <option value="RS">
+        <option value="RU">
+        <option value="RW">
+        <option value="SA">
+        <option value="SB">
+        <option value="SC">
+        <option value="SD">
+        <option value="SE">
+        <option value="SG">
+        <option value="SH">
+        <option value="SI">
+        <option value="SJ">
+        <option value="SK">
+        <option value="SL">
+        <option value="SM">
+        <option value="SN">
+        <option value="SO">
+        <option value="SR">
+        <option value="SS">
+        <option value="ST">
+        <option value="SV">
+        <option value="SX">
+        <option value="SY">
+        <option value="SZ">
+        <option value="TC">
+        <option value="TD">
+        <option value="TF">
+        <option value="TG">
+        <option value="TH">
+        <option value="TJ">
+        <option value="TK">
+        <option value="TL">
+        <option value="TM">
+        <option value="TN">
+        <option value="TO">
+        <option value="TR">
+        <option value="TT">
+        <option value="TV">
+        <option value="TW">
+        <option value="TZ">
+        <option value="UA">
+        <option value="UG">
+        <option value="UM-DQ">
+        <option value="UM-FQ">
+        <option value="UM-HQ">
+        <option value="UM-JQ">
+        <option value="UM-MQ">
+        <option value="UM-WQ">
+        <option value="US">
+        <option value="UY">
+        <option value="UZ">
+        <option value="VA">
+        <option value="VC">
+        <option value="VE">
+        <option value="VG">
+        <option value="VI">
+        <option value="VN">
+        <option value="VU">
+        <option value="WF">
+        <option value="WS">
+        <option value="YE">
+        <option value="YT">
+        <option value="ZA">
+        <option value="ZM">
+        <option value="ZW">
+    </datalist>
+
+</head>
+
+<body>
+    <p>
+		<input name="button1" type="button" id="myButton1" onClick="changePageBackgroundAndButtonTextColor('blue','white')" value="1. Change color" />
+        <br/>
+        <br/>
+
+		<input name="button2" type="button" id="myButton2" onClick="resetBackground()" value="2. Reset background" />
+        <br/>
+        <br/>
+
+		<input name="button3" type="button" id="myButton3" onClick="infosCountry('countriesTP.xml','cherchePays.xsl','element_a_recuperer', document.getElementById('myText1').value, 'infos_country');" value="3. Infos country" />
+        <input name="text" type="text" id="myText1" />
+        <br/>
+        <br/>
+
+        
+		<input name="button4" type="button" id="myButton4" onClick="displaySvgDrawing('exemple.svg', 'espace_svg')" value="4. Display drawing" />
+        <br/>
+        <br/>
+
+        
+		<input name="button5" type="button" id="myButton5" onClick="makeSvgClickable('espace_svg', 'infos_svg', 'title')" value="5. Make SVG clickable" />
+        <br/>
+        <br/>
+
+        
+		<input name="button6" type="button" id="myButton6" onClick="displaySvgDrawing('worldHigh.svg', 'espace_svg_map')" value="6. Display world map" />
+        <br/>
+        <br/>
+
+        
+		<input name="button7" type="button" id="myButton7" onClick="makeSvgClickable('espace_svg_map', 'infos_svg_map', 'countryname')" value="7. Make map clickable" />
+        <br/>
+        <br/>
+
+        
+		<input name="button8" type="button" id="myButton8" onClick="infosCountryOnMouseOver('countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="8. Capture passing" />
+        <br/>
+        <br/>
+
+        <input name="button9" type="button" id="myButton9" onClick="autoComplete('myText1', 'countriesIds')" value="9. Autocomplete" />
+        <br/>
+        <br/>
+
+        <input name="button10" type="button" id="myButton10" onClick="addCurrency(); infosCountryOnMouseOver('countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="10. Add Currency" />
+        <br/>
+        <br/>
+
+        <input name="button11" type="button" id="myButton11" onClick="colorLanguage('myText1', 'countriesTP.xml')" value="10. Color Language" />
+        <br/>
+        <br/>
+
+        <input name="button12" type="button" id="myButton12" onClick="randomCountry('random_country')" value="12. Random Country" />
+        <br/>
+        <br/>
+
+
+
+
+        <div id="infos_country">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="espace_svg">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="infos_svg">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="table_infos_country">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="random_country">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="result_answer">
+        </div>
+        <br/>
+        <br/>
+        
+        <div id="espace_svg_map">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="infos_svg_map">
+        </div>
+        <br/>
+        <br/>
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Remplace le texte "LES NOMS" avec le contenu du champ de saisi: <br/>
+		<input name="button" type="button" id="myButton1" onClick="setNom(document.getElementById('myText1').value);" value="1. AJAX simple" />
+        <input name="text" type="text" id="myText1" value="Toto" />
+        <br/><br/>
+        Charge le fichier Employees.xml en ajax, cherche du contenu en javascript et remplace le texte "LES NOMS" avec le sr�sultat
+		<br />
+        <input name="button2" type="button" id="myButton2" onClick="Bouton2_ajaxEmployees('Employees.xml');" value="2. AJAX avec Employees.xml" />
+       
+		<br />
+		<br/>
+		Charge me un fichier XML contenant des r�f�rences bibliographiques, une feuille de style, applique la feuille de stymle sur le fichier XML et affiche le r�sultat en bas de la page:
+		<br/>
+        <input name="button3" type="button" id="myButton2" onClick="Bouton3_ajaxBibliographie('ajax.bib.xml','ajax.bib.xsl','element_a_recuperer');" value="3. AJAX avec ajax.bib.xml/ajax.bib.xsl pour les livres (Book)" />
+
+		<br />
+		<br/>
+		Charge me un fichier XML contenant des r�f�rences bibliographiques, une feuille de style, r�cup�re le choix de type de bibliographie, le passe en param�tre � la feuille de style, applique la feuille de stymle sur le fichier XML et affiche le r�sultat en bas de la page:
+		<br/>
+		 <label for="cars">Type de r�f�rence biblio :</label>
+
+		<select name="cars" id="type_ref_bibliographiques">
+		  <option value="Book">Livre</option>
+		  <option value="ArticleInJournal">Article dans un journal</option>
+		  <option value="Proceedings">Article dans conf�rence</option>
+		</select> 
+		<br/>
+        <input name="button4" type="button" id="myButton4" onClick="Bouton4_ajaxBibliographieAvecParametres('ajax.bib.xml','ajax.bibParam.xsl','element_a_recuperer', document.getElementById('type_ref_bibliographiques').value);" value="4. AJAX avec ajax.bib.xml/ajax.bibParam.xsl et un param�tre" />
+
+		</p>
+    <div>
+        <p>Les noms sont : <br/>
+            <span id="id_nom_a_remplacer" style="color: red; font-weight: bold;">LES NOMS (Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par les noms) </span>.</p>
+    </div>
+    <div id="id_element_a_remplacer">
+        <p style="color: red; font-weight: bold;">Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par une bibliographie en XML mise en forme par une feuille de style XSLT...</p>
+    </div> -->
+
+
+</body>
+
+</html>

@@ -73,10 +73,7 @@ function makeSvgClickable(espace_drawing, espace_infos, element_clickable) {
     });
 }
 
-function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, idEspace, currencyEnable) {
-
-    // infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference, idEspace)
-
+function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, espaceId, currencyEnable) {
 
     // Get the SVG element
     var svgElement = document.getElementById("espace_svg_map");
@@ -87,7 +84,7 @@ function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementAR
     // Attach a click event listener to each element
     clickableElements.forEach(function(element) {
         element.addEventListener('mouseover', function() {
-            infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, this.getAttribute('countryname'), idEspace, currencyEnable);
+            infosCountry(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, this.getAttribute('countryname'), espaceId, currencyEnable);
             element.classList.remove('land');
             element.setAttribute("fill", "red")
         });
@@ -105,22 +102,129 @@ function infosCountryOnMouseOver(xmlDocumentUrl, xslDocumentUrl, baliseElementAR
                 elementHtmlParent = window.document.getElementById("country_currency");
                 elementHtmlParent.innerHTML = "";
             }
-            element.classList.remove('land');
             element.setAttribute("fill", "#CCCCCC")
 
         });
     });
 }
 
-function autoComplete() {
+
+// function autoComplete(textAreaId, datalistId) {
+
+// Don't sort suggestions
+
+//     const input = document.getElementById(textAreaId);
+//     input.setAttribute("list", datalistId);
+// }
+
+function autoComplete(textAreaId, datalistId) {
+
+    // Sort suggestions by similitude with the input
+    // For example: F will suggests FI first instead of AF
+
+    const input = document.getElementById(textAreaId);
+    input.setAttribute("list", datalistId);
+
+    const dataList = document.getElementById(datalistId);
+    const options = Array.from(dataList.options);
+
+    input.addEventListener("input", function() {
+        const inputValue = input.value.toLowerCase();
+
+        options.sort(function(a, b) {
+            const aVal = a.value.toLowerCase();
+            const bVal = b.value.toLowerCase();
+
+            const aIndex = aVal.indexOf(inputValue);
+            const bIndex = bVal.indexOf(inputValue);
+
+            if (aIndex !== -1 && bIndex !== -1) {
+                return aIndex - bIndex;
+            } else if (aIndex !== -1) {
+                return -1;
+            } else if (bIndex !== -1) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        while (dataList.firstChild) {
+            dataList.removeChild(dataList.firstChild);
+        }
+
+        options.forEach(function(option) {
+            dataList.appendChild(option);
+        });
+    });
 }
 
 function addCurrency() {
     currencyEnable = true;
 }
 
-function colorLanguage() {
+function colorLanguage(textId, xmlDocumentUrl) {
+    // Get the SVG element
+    var svgElement = document.getElementById("espace_svg_map");
 
+    // Get all path elements in the SVG
+    var clickableElements = svgElement.querySelectorAll('path');
+
+    var countryCode = document.getElementById(textId).value;
+    
+    // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
+    var xmlDocument = chargerHttpXML(xmlDocumentUrl);
+
+    // Use XPath to extract information from the XML document
+    var xpathExpression = "//country[languages/* = //country[country_codes/cca2='" + countryCode + "']/languages/*]/country_name/common_name";
+    var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+
+    var countriesSelected = [];
+
+    for (var i = 0; i < xpathResult.snapshotLength; i++) {
+        var countrySelected = xpathResult.snapshotItem(i).textContent;
+        countriesSelected.push(countrySelected);
+    }
+
+    // Attach a click event listener to each element
+    clickableElements.forEach(function(element) {
+        if(countriesSelected.includes(element.getAttribute('countryname'))) {
+            element.classList.remove('land');
+            element.setAttribute("fill", "blue")
+        }
+    });
+}
+
+function randomCountry(espace_country) {
+
+    elementHtmlParent = window.document.getElementById("result_answer");
+    elementHtmlParent.innerHTML="";
+
+    var svgElement = document.getElementById("espace_svg_map");
+
+    var countries = svgElement.querySelectorAll('path');
+
+    var randomIndex = Math.floor(Math.random() * countries.length);
+
+    var randomCountry = countries[randomIndex].getAttribute("countryname");
+
+    // Recherche du parent (dont l'id est "here") de l'�l�ment � remplacer dans le document HTML courant
+    var elementHtmlParent = window.document.getElementById(espace_country);
+    
+	// ins�rer l'�lement transform� dans la page html
+    elementHtmlParent.innerHTML="Try to find : " + randomCountry;
+
+    // Attach a click event listener to each element
+    countries.forEach(function(element) {
+        element.addEventListener('click', function() {
+        elementHtmlParent = window.document.getElementById("result_answer");
+            if(this.getAttribute('countryname') == randomCountry) {
+                elementHtmlParent.innerHTML="True";
+            } else {
+                elementHtmlParent.innerHTML="False";
+            }
+        });
+    });
 }
 
 

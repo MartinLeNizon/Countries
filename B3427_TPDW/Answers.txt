@@ -1,92 +1,110 @@
-Step 1
+B3427
+NIZON Martin
+NGUYEN Mathis
+
+Step 1 : Exploring the instance [XPath]
     1.
-        1. /countries/country/country_name/offic_name
+        1. The official names (country_name/offic_name) of the countries
+        
+        $x("//countries/country/country_name/offic_name/text()")
+        Array(248) [ #text, #text, #text, #text, #text, #text, #text, #text, #text, #text, … ]
 
-        Array(248) [ offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, … ]
+        2. The latitude of each country
+        
+        $x(//countries/country/coordinates/@lat")
+        Array(247) [ lat="12.5", lat="33", lat="-12.5", lat="18.25", lat="60.116667", lat="41", lat="42.5", lat="24", lat="-34", lat="40", … ]
 
-        2. /countries/country/coordinates/@lat
+        3. The area of each country
 
-            Array(247) [ lat="12.5", lat="33", lat="-12.5", lat="18.25", lat="60.116667", lat="41", lat="42.5", lat="24", lat="-34", lat="40", … ]
+        $x("//countries/country/@area")
+        Array(248) [ area="180", area="652230", area="1246700", area="91", area="1580", area="28748", area="468", area="83600", area="2780400", area="29743", … ]
 
-        3. /countries/country/@area
+        4. The official names of European countries (continent = Europe)
+        
+        $x("//countries/country[infosContinent/continent='Europe']/country_name/offic_name/text()")
+        Array(53) [ #text, #text, #text, #text, #text, #text, #text, #text, #text, #text, … ]
 
-            Array(248) [ area="180", area="652230", area="1246700", area="91", area="1580", area="28748", area="468", area="83600", area="2780400", area="29743", … ]
+        5. The common names of countries that do not have any native name
+        
+        $x("//country_name[count(native_name)=0]/common_name/text()")
+        Array [ #text]
+    ​    (0: #text "Antarctica")
 
-        4. /countries/country/country_name/offic_name[../../infosContinent/continent='Europe']
+        6. The official names of the countries expressed in French, for those who have such names
+        
+        $x("//countries/country/country_name/native_name[@lang='fra']/offic_name/text()")
+        Array(46) [ #text, #text, #text, #text, #text, #text, #text, #text, #text, #text, … ]
 
-            Array(53) [ offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, offic_name, … ]
+        7. Elements with at least one attribute
+        
+        $x("//*[count(@*)>0]")
+        Array(910) [ country, native_name, native_name, coordinates, country, native_name, native_name, native_name, coordinates, country, … ]
 
-        5. //country_name[count(native_name)=0]/common_name/text()
+        8. Official names of the second native name of countries (for those who have)
+        
+        $x("//country_name[count(native_name)>=2]/native_name[position()=2]/offic_name/text()")
+        Array(98) [ #text, #text, #text, #text, #text, #text, #text, #text, #text, #text, … ]
 
-            Array [ #text]
-    ​           0: #text "Antarctica"
+        9. The sum of the surfaces (area) of the countries of Africa
+        
+        $x("sum(//country[infosContinent/continent='Africa']/@area)")
+        30318023
 
-        6. /countries/country/country_name/native_name[@lang='fra']/offic_name/text()
+        10. Countries whose common name is not contained in their official name
+        
+        $x("//country[not(country_name[contains(offic_name,common_name)])]")
+        Array(25) [ country, country, country, country, country, country, country, country, country, country, … ]
 
-            Array(46) [ #text, #text, #text, #text, #text, #text, #text, #text, #text, #text, … ]
-
-        7. //*[count(@*)>0]
-
-            Array(910) [ country, native_name, native_name, coordinates, country, native_name, native_name, native_name, coordinates, country, … ]
-
-        8. //country_name[count(native_name)>=2]/native_name[position()=2]/offic_name/text()
-
-            Array(98) [ #text, #text, #text, #text, #text, #text, #text, #text, #text, #text, … ]
-
-        9. sum(//country[infosContinent/continent='Africa']/@area)
-
-            30318023
-
-        10. //country[ not( country_name[ contains(offic_name,common_name) ] ) ]
-
-            Array(25) [ country, country, country, country, country, country, country, country, country, country, … ]
-
-        11. //country[country_name/common_name='France']/borders/neighbour[last()]/text()
+        11. France's last neighbor
+        
+        $x("//country[country_name/common_name='France']/borders/neighbour[last()]/text()")
             or
-        //country[ country_codes/cca3 = //country[country_name/common_name='France']/borders/neighbour[last()] ]/country_name/common_name/text()
+        $x("//country[ country_codes/cca3 = //country[country_name/common_name='France']/borders/neighbour[last()] ]/country_name/common_name/text()")
 
+            Array [ #text ]
             0: #text "CHE"
                 or
-            0: #text "Switzerland"
+            Array [ #text ]
+​            0: #text "Switzerland"
 
-        12. count(//country[./country_name/common_name='France']/preceding-sibling::country)+1
+        12. The position of France in the XML document
+        
+        $x("count(//country[./country_name/common_name='France']/preceding-sibling::country)+1")
+        75
 
-            75
-
-Step 2
+Step 2 : Instance update [XML, DTD]
     1. 
         1. On compte les pays n'ayant aucun élément fils indiqué par une étoile. Si 0, il faut mettre un + à la place de *.
 
-            count(//country[count(tld)=0])
+            $x("count(//country[count(tld)=0])")
                 1
 
-            count(//country[count(currency)=0])
+            $x("count(//country[count(currency)=0])")
                 1
 
-            count(//country[count(callingCode)=0])
+            $x("count(//country[count(callingCode)=0])")
                 5
 
-            count(//country[count(altSpellings)=0])
+            $x("count(//country[count(altSpellings)=0])")
                 0
                 -> altSpellings+
 
-            count(//country[count(infosContinent)=0])
+            $x("count(//country[count(infosContinent)=0])")
                 0
                 -> infosContinent+
 
-            count(//country[count(languages)=0])
+            $x("count(//country[count(languages)=0])")
                 0
                 -> languages+
 
-            count(//country[count(coordinates)=0])
+            $x("count(//country[count(coordinates)=0])")
                 1
 
-            count(//country[count(borders)=0])
+            $x("count(//country[count(borders)=0])")
                 82
+
+            D'où : 
             
             <!ELEMENT country (country_name,tld*,country_codes,currency*,callingCode*,
-                   capital,altSpellings+, infosContinent+,languages+,
-                   coordinates*,demonym,landlocked,borders*)>
-
-Step 3
-    1.
+                capital,altSpellings+,infosContinent+,languages+,
+                coordinates*,demonym,landlocked,borders*)>
