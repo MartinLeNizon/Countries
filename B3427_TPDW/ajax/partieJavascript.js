@@ -255,13 +255,13 @@ function randomCountry(espace_country) {
     });
 }
 
-function DisplayCloserCountry(latitudeId, longitudeId, answerId){
+function findCountry(latitudeId, longitudeId, answerId){
 
     var latitude = document.getElementById(latitudeId).value;
     var longitude = document.getElementById(longitudeId).value;
     
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
-    var xmlDocument = chargerHttpXML("countriesTP.xml");
+    var xmlDocument = chargerHttpXML("../countriesTP.xml");
 
     var xpathExpression = "//country[coordinates/@lat = " + latitude + " and coordinates/@long = " + longitude + "]/country_name/common_name";
    
@@ -289,7 +289,7 @@ function calculateDistance(distanceId) {
 function getCountriesCoord(espace_drawing, element_clickable, distanceId) {
 
     // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
-    var xmlDocument = chargerHttpXML("countriesTP.xml");
+    var xmlDocument = chargerHttpXML("../countriesTP.xml");
 
     // Get the SVG element
     var svgElement = document.getElementById(espace_drawing);
@@ -357,7 +357,7 @@ function haversine(lat1, lon1, lat2, lon2) {
 
 function colorByArea(espace_drawing) {
 
-    var xmlDocument = chargerHttpXML("countriesTP.xml");
+    var xmlDocument = chargerHttpXML("../countriesTP.xml");
     
 
     // Get the SVG element
