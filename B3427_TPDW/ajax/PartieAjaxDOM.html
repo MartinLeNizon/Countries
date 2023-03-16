@@ -287,58 +287,57 @@ Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le 
 <body>
     <p>
 		<input name="button1" type="button" id="myButton1" onClick="changePageBackgroundAndButtonTextColor('blue','white')" value="1. Change color" />
-        <br/>
-        <br/>
 
 		<input name="button2" type="button" id="myButton2" onClick="resetBackground()" value="2. Reset background" />
         <br/>
         <br/>
 
 		<input name="button3" type="button" id="myButton3" onClick="infosCountry('countriesTP.xml','cherchePays.xsl','element_a_recuperer', document.getElementById('myText1').value, 'infos_country');" value="3. Infos country" />
-        <input name="text" type="text" id="myText1" />
+        <input name="text1" type="text" id="myText1" />
         <br/>
         <br/>
 
         
 		<input name="button4" type="button" id="myButton4" onClick="displaySvgDrawing('exemple.svg', 'espace_svg')" value="4. Display drawing" />
-        <br/>
-        <br/>
 
         
 		<input name="button5" type="button" id="myButton5" onClick="makeSvgClickable('espace_svg', 'infos_svg', 'title')" value="5. Make SVG clickable" />
-        <br/>
-        <br/>
 
         
 		<input name="button6" type="button" id="myButton6" onClick="displaySvgDrawing('worldHigh.svg', 'espace_svg_map')" value="6. Display world map" />
-        <br/>
-        <br/>
-
+        
         
 		<input name="button7" type="button" id="myButton7" onClick="makeSvgClickable('espace_svg_map', 'infos_svg_map', 'countryname')" value="7. Make map clickable" />
-        <br/>
-        <br/>
-
+        
         
 		<input name="button8" type="button" id="myButton8" onClick="infosCountryOnMouseOver('countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="8. Capture passing" />
-        <br/>
-        <br/>
+        
 
         <input name="button9" type="button" id="myButton9" onClick="autoComplete('myText1', 'countriesIds')" value="9. Autocomplete" />
-        <br/>
-        <br/>
+        
 
         <input name="button10" type="button" id="myButton10" onClick="addCurrency(); infosCountryOnMouseOver('countriesTP.xml','infosPays.xsl','element_a_recuperer', 'table_infos_country', currencyEnable)" value="10. Add Currency" />
-        <br/>
-        <br/>
+        
 
         <input name="button11" type="button" id="myButton11" onClick="colorLanguage('myText1', 'countriesTP.xml')" value="10. Color Language" />
-        <br/>
-        <br/>
+       
 
         <input name="button12" type="button" id="myButton12" onClick="randomCountry('random_country')" value="12. Random Country" />
         <br/>
         <br/>
+
+
+        <span>Latitude: </span><input name="text" type="text2" id="myText2" />
+        <span>Longitude: </span><input name="text3" type="text" id="myText3" />
+        <input name="button13" type="button" id="myButton13" onClick="DisplayCloserCountry('myText2', 'myText3', 'answer_coordinates')" value="13. Find country" />
+        <br/>
+        <br/>
+
+        
+        <input name="button14" type="button" id="myButton14" onClick="calculateDistance('distance')" value="14. Calculate distance between two countries" />
+        <br/>
+        <br/>
+        
 
 
 
@@ -379,6 +378,16 @@ Question 8 - Prendre en paramètre le nom du pays survolé (countryname dans le 
         <br/>
 
         <div id="infos_svg_map">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="answer_coordinates">
+        </div>
+        <br/>
+        <br/>
+
+        <div id="distance">
         </div>
         <br/>
         <br/>

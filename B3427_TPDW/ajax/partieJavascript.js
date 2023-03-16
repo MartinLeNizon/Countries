@@ -227,6 +227,78 @@ function randomCountry(espace_country) {
     });
 }
 
+function DisplayCloserCountry(latitudeId, longitudeId, answerId){
+
+    var latitude = document.getElementById(latitudeId).value;
+    var longitude = document.getElementById(longitudeId).value;
+    
+    // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
+    var xmlDocument = chargerHttpXML("countriesTP.xml");
+
+    var xpathExpression = "//country[coordinates/@lat = " + latitude + " and coordinates/@long = " + longitude + "]/country_name/common_name";
+   
+    var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
+    var result = xpathResult.stringValue;
+    
+    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
+    var elementHtmlParent = window.document.getElementById(answerId);
+
+    if(result) {
+        // insérer l'élement transformé dans la page html
+        elementHtmlParent.innerHTML = result;
+    } else {
+        elementHtmlParent.innerHTML = "No country found";
+    }
+
+}
+
+
+function calculateDistance(distanceId) {
+
+    // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
+    var xmlDocument = chargerHttpXML("countriesTP.xml");
+
+    
+    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
+    var elementHtmlParent = window.document.getElementById(distanceId);
+    elementHtmlParent.innerHTML = haversine(10,20,50,-10);
+
+}
+
+function chooseCountries(espace_drawing, element_clickable) {
+    // Get the SVG element
+    var svgElement = document.getElementById(espace_drawing);
+
+    // Get all path elements in the SVG
+    var clickableElements = svgElement.querySelectorAll('path');
+
+    // Attach a click event listener to each element
+    clickableElements.forEach(function(element) {
+        element.addEventListener('click', function() {
+            // Get the value of the "title" attribute
+            var title = element.getAttribute(element_clickable);
+        });
+    });
+}
+
+function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371; // rayon moyen de la Terre en km
+    const dLat = (lat2 - lat1) * Math.PI / 180; // différence de latitude en radians
+    const dLon = (lon2 - lon1) * Math.PI / 180; // différence de longitude en radians
+    const lat1Rad = lat1 * Math.PI / 180; // latitude du premier point en radians
+    const lat2Rad = lat2 * Math.PI / 180; // latitude du deuxième point en radians
+  
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // distance en km
+  
+    return d;
+  }
+
+
+
 
 
 
