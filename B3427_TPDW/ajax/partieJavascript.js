@@ -379,9 +379,36 @@ function colorByArea(espace_drawing) {
     });
 }
 
+function colorByDensity(espace_drawing) {
 
+    var xmlDocument = chargerHttpXML("../countriesTP.xml");
+    
 
+    // Récupérer le SVG element
+    var svgElement = document.getElementById(espace_drawing);
 
+    // Récupérer tous les path éléments dans le SVG
+    var colorableElements = svgElement.querySelectorAll('path');
+
+    // Ajouter un click event listener à chaque élément
+    colorableElements.forEach(function(element) {
+        var xpathExpression = "//country[country_codes/cca2 = '" + element.getAttribute('id') + "']/@area";  
+        var xpathResult = xmlDocument.evaluate(xpathExpression, xmlDocument, null, XPathResult.STRING_TYPE, null);
+        var area = Number(xpathResult.stringValue);
+
+        var jsonDocumentUrl = "https://restcountries.com/v2/alpha/" + element.getAttribute('id');
+        var jsonDocument = chargerHttpJSON(jsonDocumentUrl);
+        var population = jsonDocument.population;
+
+        var density = population/area;
+
+        element.classList.remove('land');
+        element.setAttribute("fill", "#000000");
+
+        element.setAttribute("opacity", density/345);   // Densité de l'Inde -> Si calculé en direct, trop de calcul (pour pas grand chose)
+
+    });
+}
 
 //charge le fichier XML se trouvant à l'URL relative donné dans le paramètre et le retourne
 function chargerHttpXML(xmlDocumentUrl) {
